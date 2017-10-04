@@ -1,0 +1,19 @@
+{
+    "name": "lyssal/doctrine-orm-bundle",
+    "description": "Bundle for the Doctrine ORM library ; more cool functions in the Doctrine repositories and managers.",
+	"license" : "proprietary",
+    "keywords": ["doctrine", "orm", "repository", "manager"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Rémi Leclerc",
+            "homepage": "http://www.lyssal.com/"
+        }
+    ],
+    "require": {
+        "lyssal/doctrine-orm": "~0.1"
+    },
+    "autoload":     {
+        "psr-0": { "Lyssal\\Doctrine\\OrmBundle": "src" }
+    }
+}
