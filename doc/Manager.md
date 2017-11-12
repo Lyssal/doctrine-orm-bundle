@@ -40,6 +40,22 @@ For example:
 ```php
 use Lyssal\Doctrine\Orm\QueryBuilder;
 
+// genderParent IS NULL
+$conditions = [
+    'genderParent' => null
+];
+// or
+$conditions = [
+    QueryBuilder::WHERE_NULL => 'genderParent'
+];
+// or (if we want many WHERE_NULL)
+$conditions = [[
+    QueryBuilder::AND_WHERE => [
+        [QueryBuilder::WHERE_NULL => 'genderParent'],
+        [QueryBuilder::WHERE_NULL => '...']
+    ]
+];
+
 // (gender = $gender OR genderParent = $gender) AND gender.name LIKE '%trategi%'
 $conditions = [
     QueryBuilder::OR_WHERE => [
