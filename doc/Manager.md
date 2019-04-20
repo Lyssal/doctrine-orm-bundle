@@ -109,20 +109,24 @@ For example:
 
 ```php
 $extras = [
+    // innerJoin('entity.city', 'city')
     // innerJoin('city.country', 'country')
     QueryBuilder::INNER_JOINS => [
+        'city' => 'city'
         'city.country' => 'country'
     ],
-    // addSelect('country')
+    // select('entity', 'city', 'country')
     QueryBuilder::SELECTS => [
-        'country' => QueryBuilder::SELECT_JOIN
+        QueryBuilder::ALIAS,
+        'city',
+        'country',
     ]
 ];
 ```
 
 Possibilities for the `$extras` parameter are:
 
-* `QueryBuilder::SELECTS` : Calls the `addSelect()` method. You can add a joined entity or any other value (an entity property, a COUNT, etc).
+* `QueryBuilder::SELECTS` : Calls the `select()` method. You can add a joined entity or any other value (an entity property, a COUNT, etc). Do not forget to add `QueryBuilder::ALIAS` if you need the main entity or use a joined entity
 * `QueryBuilder::LEFT_JOINS`
 * `QueryBuilder::INNER_JOINS`
 * `QueryBuilder::GROUP_BYS`
