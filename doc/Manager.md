@@ -126,3 +126,28 @@ Possibilities for the `$extras` parameter are:
 * `QueryBuilder::LEFT_JOINS`
 * `QueryBuilder::INNER_JOINS`
 * `QueryBuilder::GROUP_BYS`
+
+
+
+## The default `orderBy`
+
+You can define a default `orderBy` extending the `$DEFAULT_ORDER_BY` static property.
+
+```php
+use Lyssal\Doctrine\Orm\Manager\EntityManager;
+
+/**
+ * The MyEntity manager.
+ */
+class MyEntityManager extends EntityManager
+{
+    /**
+     * @inheritDoc
+     */
+    public static $DEFAULT_ORDER_BY = [
+        'position' => 'ASC',
+    ];
+}
+```
+
+And if you do not define the `$orderBy` parameter (in `findBy()`, `findAll()`, etc), this value will be always used.
