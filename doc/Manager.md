@@ -5,6 +5,8 @@ You can use the Lyssal Doctrine ORM manager as the base of all your entity manag
 
 ## Use
 
+### Create your specific manager
+
 ```php
 use Lyssal\Doctrine\Orm\Manager\EntityManager;
 
@@ -19,17 +21,51 @@ class MyEntityManager extends EntityManager
 
 You also can directly use the Lyssal Doctrine ORM manager, just use the parameter `lyssal.doctrine.orm.entity_manager.class`.
 
-```xml
-<service id="acme.my_bundle.manager.my_entity" class="%lyssal.doctrine.orm.entity_manager.class%">
-    <argument type="service" id="doctrine.orm.entity_manager" />
-    <argument>Acme/MyBundle/Entity/MyEntity</argument>
-</service>
+```yaml
+services:
+    _defaults:
+        autowire: true
+
+    App\Doctrine\Manager\MyEntityManager:
+        bind:
+            $class: App\Entity\MyEntity
+        tags: ['lyssal.entity_manager']
 ```
+
+### Automatically generate entity managers
+
+If you do not want to create specific methods, you do not need to create a class.
+Just use the `lyssal.entity_manager` service:
+
+```php
+use App\Entity\MyEntity;
+use Lyssal\Doctrine\OrmBundle\Manager\EntityManager;
+
+/**
+ * ...
+ */
+public function foo(EntityManager $entityManager)
+{
+    /**
+     * @var \Lyssal\Doctrine\Orm\Manager\EntityManager $myEntityManager
+     */
+    $myEntityManager = $entityManager->get(MyEntity::class);
+
+    $myEntities = $myEntityManager->findLikeBy([
+        'name' => '%toto%',
+    ]);
+
+    ...
+}
+```
+
+The Lyssal entity manager will generate a default manager with a lot of useful methods (to read, write, remove, access the entity repository, etc) or will use your own manager.
+If you want to use your manager, you have to use the `lyssal.entity_manager` tag and your class has to extend `Lyssal\Doctrine\Orm\Manager\EntityManager`.
 
 
 ## The method parameters
 
-Read the API documentation for the list of the methods.
+Read the phpdoc for the list of the methods.
 
 ### The `$conditions` parameter
 
