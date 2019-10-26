@@ -14,7 +14,9 @@
         "php": ">=7.1",
         "lyssal/doctrine-orm": "~0.1"
     },
-    "autoload":     {
-        "psr-0": { "Lyssal\\Doctrine\\OrmBundle": "src" }
+    "autoload": {
+        "psr-4": {
+            "Lyssal\\Doctrine\\OrmBundle\\": "src/"
+        }
     }
 }
