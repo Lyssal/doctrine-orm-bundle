@@ -1,6 +1,6 @@
 # The entity repository
 
-See the [Lyssal Doctrine ORM manager documentation](Manager.md) for more informations about the method parameters.
+See the [Lyssal Doctrine ORM administrator documentation](Administrator.md) for more informations about the method parameters.
 
 
 ## Use
@@ -18,14 +18,14 @@ doctrine:
 Vous devez simplement étendre votre repository :
 
 ```php
-namespace Acme\MyBundle\Repository;
+namespace App\Doctrine\Repository;
 
-use Lyssal\Doctrine\OrmBundle\Repository\EntityRepository;
+use Lyssal\Doctrine\Orm\Repository\EntityRepository;
 
 /**
- * My repository.
+ * The MyEntity repository.
  */
-class MyEntityRepository extends EntityRepository
+final class MyEntityRepository extends EntityRepository
 {
     // My specific methods
 }
@@ -39,10 +39,9 @@ use Doctrine\ORM\Mapping as Orm;
 /**
  * My entity.
  * 
- * @Orm\Entity(repositoryClass="\Acme\MyBundle\Repository\MyEntityRepository")
- * @Orm\Table()
+ * @Orm\Entity(repositoryClass="\App\Doctrine\Repository\MyEntityRepository")
  */
-class MyEntity
+final class MyEntity
 {
     //...
 }

@@ -1,6 +1,6 @@
 {
     "name": "lyssal/doctrine-orm-bundle",
-    "description": "Bundle for the Doctrine ORM library ; more cool functions in the Doctrine repositories and managers.",
+    "description": "Bundle for the Doctrine ORM library ; more functions to manage entities.",
 	"license" : "proprietary",
     "keywords": ["doctrine", "orm", "repository", "manager"],
     "type": "library",
@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "lyssal/doctrine-orm": "~0.1"
+        "lyssal/doctrine-orm": "~0.2"
     },
     "autoload": {
         "psr-4": {

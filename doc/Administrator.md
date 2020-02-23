@@ -1,66 +1,68 @@
-# The entity manager
+# The entity administrator
 
-You can use the Lyssal Doctrine ORM manager as the base of all your entity managers.
+You can use the Lyssal Doctrine ORM administrator as the base of all your entity administrators.
+The administrator is connected to the entity repository and permits to read, save and remove entities.
 
 
 ## Use
 
-### Create your specific manager
+### Create your specific administrator
 
 ```php
-use Lyssal\Doctrine\Orm\Manager\EntityManager;
+namespace App\Doctrine\Administrator;
+
+use App\Entity\MyEntity;
+use Lyssal\Doctrine\Orm\Administrator\EntityAdministrator;
 
 /**
- * The MyEntity's manager.
+ * The MyEntity's administrator.
  */
-class MyEntityManager extends EntityManager
+final class MyEntityAdministrator extends EntityAdministrator
 {
-    // Your logic
+    // Your methods
+
+    /**
+     * @inheritDoc
+     */
+    public function getClass(): string
+    {
+        return MyEntity::class;
+    }
 }
 ```
 
-You also can directly use the Lyssal Doctrine ORM manager, just use the parameter `lyssal.doctrine.orm.entity_manager.class`.
 
-```yaml
-services:
-    _defaults:
-        autowire: true
-
-    App\Doctrine\Manager\MyEntityManager:
-        bind:
-            $class: App\Entity\MyEntity
-        tags: ['lyssal.entity_manager']
-```
-
-### Automatically generate entity managers
+### Automatically generate entity administrators
 
 If you do not want to create specific methods, you do not need to create a class.
-Just use the `lyssal.entity_manager` service:
+Just use the `lyssal.entity_administrator` service:
 
 ```php
+namespace App\Toto;
+
 use App\Entity\MyEntity;
-use Lyssal\Doctrine\OrmBundle\Manager\EntityManager;
+use Lyssal\Doctrine\OrmBundle\Manager\EntityAdministratorManager;
 
-/**
- * ...
- */
-public function foo(EntityManager $entityManager)
+final class MyClass
 {
-    /**
-     * @var \Lyssal\Doctrine\Orm\Manager\EntityManager $myEntityManager
-     */
-    $myEntityManager = $entityManager->get(MyEntity::class);
-
-    $myEntities = $myEntityManager->findLikeBy([
-        'name' => '%toto%',
-    ]);
-
-    ...
+    public function foo(EntityAdministratorManager $entityAdministratorManager)
+    {
+        /**
+         * @var \Lyssal\Doctrine\Orm\Administrator\EntityAdministratorInterface $myEntityAdministrator
+         */
+        $myEntityAdministrator = $entityAdministratorManager->get(MyEntity::class);
+    
+        $myEntities = $myEntityAdministrator->findLikeBy([
+            'name' => '%toto%',
+        ]);
+    
+        ...
+    }
 }
 ```
 
-The Lyssal entity manager will generate a default manager with a lot of useful methods (to read, write, remove, access the entity repository, etc) or will use your own manager.
-If you want to use your manager, you have to use the `lyssal.entity_manager` tag and your class has to extend `Lyssal\Doctrine\Orm\Manager\EntityManager`.
+The Lyssal entity administrator will generate a default administrator with a lot of useful methods (to read, write, remove, access the entity repository, etc) or will use your own administrator.
+If you want to create your own administrator, you have to use the `lyssal.entity_administrator` tag and your class has to extend `Lyssal\Doctrine\Orm\Administrator\EntityAdministrator` or implement `Lyssal\Doctrine\Orm\Administrator\EntityAdministratorInterface`.
 
 
 ## The method parameters
@@ -78,37 +80,37 @@ use Lyssal\Doctrine\Orm\QueryBuilder;
 
 // genderParent IS NULL
 $conditions = [
-    'genderParent' => null
+    'genderParent' => null,
 ];
 // or
 $conditions = [
-    QueryBuilder::WHERE_NULL => 'genderParent'
+    QueryBuilder::WHERE_NULL => 'genderParent',
 ];
 // or (if we want many WHERE_NULL)
 $conditions = [[
     QueryBuilder::AND_WHERE => [
         [QueryBuilder::WHERE_NULL => 'genderParent'],
-        [QueryBuilder::WHERE_NULL => '...']
-    ]
+        [QueryBuilder::WHERE_NULL => '...'],
+    ],
 ];
 
 // (gender = $gender OR genderParent = $gender) AND gender.name LIKE '%trategi%'
 $conditions = [
     QueryBuilder::OR_WHERE => [
         'gender' => $gender,
-        'genderParent' => $gender
+        'genderParent' => $gender,
     ],
     QueryBuilder::WHERE_LIKE => [
-        'gender.name' => '%trategi%'
-    ]
+        'gender.name' => '%trategi%',
+    ],
 ];
 
 // (gender.name LIKE '%trategi%' OR gender.name LIKE '%éflexio%')
 $conditions = [
     QueryBuilder::OR_WHERE => [
         [QueryBuilder::WHERE_LIKE => array('gender.name' => '%trategi%')],
-        [QueryBuilder::WHERE_LIKE => array('gender.name' => '%éflexio%')]
-    ]
+        [QueryBuilder::WHERE_LIKE => array('gender.name' => '%éflexio%')],
+    ],
 ];
 ```
 
@@ -148,15 +150,15 @@ $extras = [
     // innerJoin('entity.city', 'city')
     // innerJoin('city.country', 'country')
     QueryBuilder::INNER_JOINS => [
-        'city' => 'city'
-        'city.country' => 'country'
+        'city' => 'city',
+        'city.country' => 'country',
     ],
     // select('entity', 'city', 'country')
     QueryBuilder::SELECTS => [
         QueryBuilder::ALIAS,
         'city',
         'country',
-    ]
+    ],
 ];
 ```
 
@@ -174,12 +176,13 @@ Possibilities for the `$extras` parameter are:
 You can define a default `orderBy` extending the `$DEFAULT_ORDER_BY` static property.
 
 ```php
-use Lyssal\Doctrine\Orm\Manager\EntityManager;
+use App\Entity\MyEntity;
+use Lyssal\Doctrine\Orm\Administrator\EntityAdministrator;
 
 /**
- * The MyEntity manager.
+ * The MyEntity administrator.
  */
-class MyEntityManager extends EntityManager
+class MyEntityAdministrator extends EntityAdministrator
 {
     /**
      * @inheritDoc
@@ -187,6 +190,14 @@ class MyEntityManager extends EntityManager
     public static $DEFAULT_ORDER_BY = [
         'position' => 'ASC',
     ];
+
+    /**
+     * @inheritDoc
+     */
+    public function getClass(): string
+    {
+        return MyEntity::class;
+    }
 }
 ```
 

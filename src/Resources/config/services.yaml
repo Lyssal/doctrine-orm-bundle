@@ -1,14 +1,19 @@
 parameters:
-    lyssal.doctrine.orm.entity_manager.class: Lyssal\Doctrine\Orm\Manager\EntityManager
-    lyssal.entity_manager.class: Lyssal\Doctrine\OrmBundle\Manager\EntityManager
+    lyssal.entity_administrator_manager.class: Lyssal\Doctrine\OrmBundle\Administrator\EntityAdministratorManager
 
 services:
     _defaults:
         autowire: true
 
-    lyssal.entity_manager:
-        class: '%lyssal.entity_manager.class%'
-        public: true
+    _instanceof:
+        Lyssal\Doctrine\Orm\Administrator\EntityAdministratorInterface:
+            tags: ['lyssal.entity_administrator']
 
-    Lyssal\Doctrine\OrmBundle\Manager\EntityManager:
-        alias: 'lyssal.entity_manager'
+    lyssal.entity_administrator_manager:
+        class: '%lyssal.entity_administrator_manager.class%'
+        public: true
+        calls:
+            - [ 'addEntityAdministrators', [ !tagged lyssal.entity_administrator ] ]
+
+    Lyssal\Doctrine\OrmBundle\Administrator\EntityAdministratorManager:
+        alias: 'lyssal.entity_administrator_manager'
