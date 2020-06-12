@@ -10,6 +10,7 @@ namespace Lyssal\Doctrine\OrmBundle\Manager;
 use Doctrine\ORM\EntityManagerInterface;
 use Lyssal\Doctrine\Orm\Administrator\EntityAdministrator;
 use Lyssal\Doctrine\Orm\Administrator\EntityAdministratorInterface;
+use Traversable;
 
 /**
  * the entity administrators' manager.
@@ -41,7 +42,7 @@ class EntityAdministratorManager
      *
      * @param \Lyssal\Doctrine\Orm\Administrator\EntityAdministratorInterface[] $entityAdministrators The entity administrators
      */
-    public function addEntityAdministrators(iterator $entityAdministrators): void
+    public function addEntityAdministrators(Traversable $entityAdministrators): void
     {
         foreach ($entityAdministrators as $entityAdministrator) {
             $this->addEntityAdministrator($entityAdministrator);
