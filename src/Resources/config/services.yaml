@@ -1,5 +1,5 @@
 parameters:
-    lyssal.entity_administrator_manager.class: Lyssal\Doctrine\OrmBundle\Administrator\EntityAdministratorManager
+    lyssal.entity_administrator_manager.class: Lyssal\Doctrine\OrmBundle\Manager\EntityAdministratorManager
 
 services:
     _defaults:
@@ -15,5 +15,5 @@ services:
         calls:
             - [ 'addEntityAdministrators', [ !tagged lyssal.entity_administrator ] ]
 
-    Lyssal\Doctrine\OrmBundle\Administrator\EntityAdministratorManager:
+    Lyssal\Doctrine\OrmBundle\Manager\EntityAdministratorManager:
         alias: 'lyssal.entity_administrator_manager'
